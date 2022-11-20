@@ -1,7 +1,6 @@
 package com.example.securitytask.model;
 
 import lombok.*;
-import org.hibernate.internal.util.StringHelper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -34,12 +33,12 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (authority!=null){
+        if (authority != null) {
             return Arrays.stream(authority.split(","))
-                    .map((role)->new UserRole(role))
+                    .map((role) -> new UserRole(role))
                     .collect(Collectors.toList());
         }
-        return List.of(()->getAuthority());
+        return List.of(() -> getAuthority());
     }
 
     @Override

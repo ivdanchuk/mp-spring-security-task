@@ -16,41 +16,25 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-//    private final UserService userService;
-//    private final PasswordEncoder passwordEncoder;
     private final AuthenticationProvider authenticationProvider;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .sessionManagement()
-//                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http
                 .csrf().disable()
                 .authorizeHttpRequests()
-                .antMatchers("/about").hasAuthority("about")
-                .antMatchers("/info").hasAuthority("info")
+                .antMatchers("/about").permitAll()
                 .antMatchers("/signup").permitAll()
+                .antMatchers("/info").hasAuthority("view_info")
+                .antMatchers("/admin").hasAuthority("view_admin")
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
     }
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider);
     }
-
-//    @Override
-//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.authenticationProvider(daoAuthenticationProvider());
-//    }
-
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() {
-//        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-//        provider.setPasswordEncoder(passwordEncoder);
-//        provider.setUserDetailsService(userService);
-//        return provider;
-//    }
 
 }
